@@ -5,45 +5,45 @@ import (
 	"sort"
 )
 
-type People struct {
-	names string
-	age   int
+type Person struct {
+	Name string
+	Age  int
+}
+
+func Flexiblesort[T any](items []T, less func(a, b T) bool) {
+	sort.Slice(items, func(i, j int) bool {
+		return less(items[i], items[j])
+	})
 }
 
 func main() {
-	info := []People{
-		{"Playmaker", 20},
-		{"Joshua", 18},
-		{"Bryan", 22},
-		{"Chris", 45},
+	// Ascending
+	No := []int{5, 2, 9, 1}
+	Flexiblesort(No, func(i, j int) bool {
+		return i < j
+	})
+	fmt.Println(No)
+
+	// Descending
+
+	Flexiblesort(No, func(i, j int) bool {
+		return i > j
+	})
+	fmt.Println(No)
+	//custom
+	People := []Person{
+		{"Adaku", 20},
+		{"Helem", 20},
+		{"Chris", 36},
+		{"Godwin", 29},
 	}
-	fmt.Println("sorting age by ascending order")
-	//sorting age by ascending order
-	sort.Slice(info, func(i, j int) bool {
-		return info[i].age < info[j].age
-	})
-	fmt.Println(info)
-	fmt.Println()
 
-	fmt.Println("sorting age by descending order")
-	//sorting  age by descending order
-	sort.Slice(info, func(i, j int) bool {
-		return info[i].age > info[j].age
+	Flexiblesort(People, func(i, j Person) bool {
+		if i.Age != j.Age { // if ages are differents
+			return i.Age < j.Age // put the smaller one first
+		}
+		return i.Name < j.Name // if age are same age sort Alphabetically by name.
 	})
-	fmt.Println()
+	fmt.Println(People)
 
-	fmt.Println("sorting names by ascending order")
-	//sorting  names in ascending order
-	sort.Slice(info, func(i, j int) bool {
-		return info[i].names < info[j].names
-	})
-	fmt.Println(info)
-	fmt.Println()
-
-	fmt.Println("sorting name by descending order")
-	sort.Slice(info, func(i, j int) bool {
-		return info[i].names > info[j].names
-	})
-
-	fmt.Println(info)
 }
